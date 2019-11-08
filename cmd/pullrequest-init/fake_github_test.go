@@ -24,7 +24,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v28/github"
 )
 
 func TestFakeGitHubPullRequest(t *testing.T) {

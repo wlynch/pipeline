@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v28/github"
 	"github.com/gorilla/mux"
 	"github.com/mohae/deepcopy"
 )

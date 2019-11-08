@@ -18,11 +18,11 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-source $(dirname $0)/../vendor/github.com/tektoncd/plumbing/scripts/library.sh
+source $(go list -m -f '{{.Dir}}' github.com/tektoncd/plumbing)/scripts/library.sh
 
-CODEGEN_PKG=${CODEGEN_PKG:-$(cd ${REPO_ROOT_DIR}; ls -d -1 ./vendor/k8s.io/code-generator 2>/dev/null || echo ../../../k8s.io/code-generator)}
+CODEGEN_PKG=${CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' k8s.io/code-generator)}
 
-KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(cd ${REPO_ROOT_DIR}; ls -d -1 ./vendor/knative.dev/pkg 2>/dev/null || echo ../pkg)}
+KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' knative.dev/pkg)}
 
 # generate the code with:
 # --output-base    because this script should also be able to run inside the vendor dir of

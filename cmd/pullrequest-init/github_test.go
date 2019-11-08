@@ -29,7 +29,7 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v28/github"
 	"github.com/mohae/deepcopy"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest"
