@@ -142,6 +142,8 @@ replace (
 	knative.dev/pkg/vendor/github.com/spf13/pflag => github.com/spf13/pflag v1.0.5
 )
 
+// Pin k8s deps to 1.12.9
+
 replace (
 	k8s.io/api => k8s.io/api v0.0.0-20190528110122-9ad12a4af326
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.0.0-20190528110544-fa58353d80f3
@@ -150,6 +152,7 @@ replace (
 	k8s.io/cli-runtime => k8s.io/cli-runtime v0.0.0-20190528110732-ad79ea2fbc0f
 	k8s.io/client-go => k8s.io/client-go v0.0.0-20190528110200-4f3abb12cae2
 	k8s.io/code-generator => k8s.io/code-generator v0.0.0-20181128191024-b1289fc74931
+	k8s.io/gengo => k8s.io/gengo v0.0.0-20190327210449-e17681d19d3a
 	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.0.0-20190528110328-0ab90e449f7e
 	k8s.io/kube-controller-manager => k8s.io/kube-controller-manager v0.0.0-20190528111014-463e5d26aa13
 	k8s.io/kube-proxy => k8s.io/kube-proxy v0.0.0-20190528110839-96abc4c8d1a4
@@ -157,5 +160,6 @@ replace (
 	k8s.io/kubelet => k8s.io/kubelet v0.0.0-20190528110910-f5f997cd2103
 	k8s.io/kubernetes => k8s.io/kubernetes v1.12.9
 	k8s.io/metrics => k8s.io/metrics v0.0.0-20190528110627-05eb8901940c
-	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190528110419-48d5cc0538c7
+	//k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190528110419-48d5cc0538c7
+	//k8s.io/sample-controller => k8s.io/sample-controller v0.0.0-20190528110501-3c1214a31e44
 )
