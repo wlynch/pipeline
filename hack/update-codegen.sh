@@ -20,7 +20,10 @@ set -o pipefail
 
 source $(go list -m -f '{{.Dir}}' github.com/tektoncd/plumbing)/scripts/library.sh
 
-CODEGEN_PKG=${CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' k8s.io/code-generator)}
+#SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
+#CODEGEN_PKG=${CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' k8s.io/code-generator)}
+SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
+CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ./vendor/k8s.io/code-generator 2>/dev/null || echo ../code-generator)}
 
 KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' knative.dev/pkg)}
 
@@ -30,16 +33,21 @@ KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' knative.de
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 export GOBIN="${GOPATH}/bin"
 
-bash ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
+#bash ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
+bash ${SCRIPT_ROOT}/hack/generate-groups.sh "deepcopy,client,informer,lister" \
   github.com/tektoncd/pipeline/pkg/client github.com/tektoncd/pipeline/pkg/apis \
   pipeline:v1alpha1 \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt
+
+echo "DEEP COPY"
 
 # Depends on generate-groups.sh to install bin/deepcopy-gen
 ${GOPATH}/bin/deepcopy-gen \
   -O zz_generated.deepcopy \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt \
   -i github.com/tektoncd/pipeline/pkg/apis/config
+
+echo "KNATIVE"
 
 # Knative Injection
 bash ${KNATIVE_CODEGEN_PKG}/hack/generate-knative.sh "injection" \
