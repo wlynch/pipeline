@@ -16,5 +16,6 @@ import (
 	// binary. We'll need to modify this to exclude tools. For now, import
 	// another package to make go mod happy.
 	// _ "knative.dev/pkg/codegen/cmd/injection-gen"
+	_ "knative.dev/pkg/codegen/cmd/injection-gen"
 	_ "knative.dev/pkg/version"
 )

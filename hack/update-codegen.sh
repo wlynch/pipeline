@@ -34,7 +34,7 @@ KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' knative.de
 export GOBIN="${GOPATH}/bin"
 
 #bash ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
-bash ${SCRIPT_ROOT}/hack/generate-groups.sh "deepcopy,client,informer,lister" \
+bash ${REPO_ROOT_DIR}/hack/generate-groups.sh "deepcopy,client,informer,lister" \
   github.com/tektoncd/pipeline/pkg/client github.com/tektoncd/pipeline/pkg/apis \
   pipeline:v1alpha1 \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt
@@ -50,7 +50,7 @@ ${GOPATH}/bin/deepcopy-gen \
 echo "KNATIVE"
 
 # Knative Injection
-bash ${KNATIVE_CODEGEN_PKG}/hack/generate-knative.sh "injection" \
+bash ${REPO_ROOT_DIR}/hack/generate-knative.sh "injection" \
   github.com/tektoncd/pipeline/pkg/client github.com/tektoncd/pipeline/pkg/apis \
   "pipeline:v1alpha1" \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt
