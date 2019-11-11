@@ -160,6 +160,6 @@ replace (
 	k8s.io/kubelet => k8s.io/kubelet v0.0.0-20190528110910-f5f997cd2103
 	k8s.io/kubernetes => k8s.io/kubernetes v1.12.9
 	k8s.io/metrics => k8s.io/metrics v0.0.0-20190528110627-05eb8901940c
-	//k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190528110419-48d5cc0538c7
-	//k8s.io/sample-controller => k8s.io/sample-controller v0.0.0-20190528110501-3c1214a31e44
+//k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190528110419-48d5cc0538c7
+//k8s.io/sample-controller => k8s.io/sample-controller v0.0.0-20190528110501-3c1214a31e44
 )
