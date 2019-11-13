@@ -25,4 +25,4 @@ cd ${REPO_ROOT_DIR}
 # Ensure we have everything we need under vendor/
 go mod tidy
 
-update_licenses third_party/VENDOR-LICENSE "./cmd/*"
+update_licenses third_party/
