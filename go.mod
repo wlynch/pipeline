@@ -53,7 +53,6 @@ require (
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	golang.org/x/sys v0.0.0-20191110163157-d32e6e3b99c4 // indirect
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
-	golang.org/x/tools v0.0.0-20191111154804-8cb0d02132ec // indirect
 	golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7
 	google.golang.org/api v0.10.0 // indirect
 	google.golang.org/appengine v1.6.5 // indirect
@@ -100,6 +99,7 @@ replace (
 	k8s.io/kubelet => k8s.io/kubelet v0.0.0-20190528110910-f5f997cd2103
 	k8s.io/kubernetes => k8s.io/kubernetes v1.12.9
 	k8s.io/metrics => k8s.io/metrics v0.0.0-20190528110627-05eb8901940c
-//k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.0.0-20190528110419-48d5cc0538c7
-//k8s.io/sample-controller => k8s.io/sample-controller v0.0.0-20190528110501-3c1214a31e44
 )
+
+// Local overrides for testing. Remove before submitting.
+replace github.com/tektoncd/plumbing => ../plumbing

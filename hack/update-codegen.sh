@@ -31,9 +31,7 @@ KNATIVE_CODEGEN_PKG=${KNATIVE_CODEGEN_PKG:-$(go list -m -f '{{.Dir}}' knative.de
 # --output-base    because this script should also be able to run inside the vendor dir of
 #                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
-export GOBIN="${GOPATH}/bin"
 
-#bash ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
 bash ${REPO_ROOT_DIR}/hack/generate-groups.sh "deepcopy,client,informer,lister" \
   github.com/tektoncd/pipeline/pkg/client github.com/tektoncd/pipeline/pkg/apis \
   pipeline:v1alpha1 \
