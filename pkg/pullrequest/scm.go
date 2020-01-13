@@ -74,13 +74,13 @@ func githubHandlerFromURL(u *url.URL, token string, logger *zap.SugaredLogger) (
 		zap.String("pr", pr),
 	)
 
-	client := github.NewDefault()
-	if u.Host != "github.com" {
-		var err error
-		client, err = github.New(fmt.Sprintf("%s://%s/api/v3", u.Scheme, u.Host))
-		if err != nil {
-			return nil, fmt.Errorf("error creating client: %w", err)
-		}
+	prefix := fmt.Sprintf("%s://%s/api/v3", u.Scheme, u.Host)
+	if u.Host == "github.com" {
+		prefix = fmt.Sprintf("%s://api.github.com", u.Scheme)
+	}
+	client, err := github.New(prefix)
+	if err != nil {
+		return nil, fmt.Errorf("error creating client: %w", err)
 	}
 	ownerRepo := fmt.Sprintf("%s/%s", owner, repo)
 	h := NewHandler(logger, client, ownerRepo, prNumber)

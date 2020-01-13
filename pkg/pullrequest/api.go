@@ -52,9 +52,9 @@ func NewHandler(logger *zap.SugaredLogger, client *scm.Client, repo string, pr i
 func (h *Handler) Download(ctx context.Context) (*Resource, error) {
 	// Pull Request
 	h.logger.Info("finding pr")
-	pr, _, err := h.client.PullRequests.Find(ctx, h.repo, h.prNum)
+	pr, resp, err := h.client.PullRequests.Find(ctx, h.repo, h.prNum)
 	if err != nil {
-		return nil, fmt.Errorf("finding pr %d: %w", h.prNum, err)
+		return nil, fmt.Errorf("error finding pr %d: %w, %v", h.prNum, err, resp)
 	}
 
 	// Statuses
