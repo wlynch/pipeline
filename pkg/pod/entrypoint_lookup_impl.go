@@ -23,6 +23,7 @@ import (
 	"github.com/google/go-containerregistry/pkg/authn/k8schain"
 	"github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
+	"github.com/google/go-containerregistry/pkg/v1/google"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
 	lru "github.com/hashicorp/golang-lru"
 	"k8s.io/client-go/kubernetes"
@@ -66,7 +67,11 @@ func (e *entrypointCache) Get(ref name.Reference, namespace, serviceAccountName 
 	if err != nil {
 		return nil, fmt.Errorf("error creating k8schain: %v", err)
 	}
-	mkc := authn.NewMultiKeychain(kc)
+
+	//mkc := authn.NewMultiKeychain(google.Keychain, kc)
+	_ = kc
+	mkc := authn.NewMultiKeychain(google.Keychain)
+	fmt.Println("###1 ENTRYPOINT CACHE")
 	img, err := remote.Image(ref, remote.WithAuthFromKeychain(mkc))
 	if err != nil {
 		return nil, fmt.Errorf("error getting image manifest: %v", err)

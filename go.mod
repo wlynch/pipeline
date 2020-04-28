@@ -56,7 +56,7 @@ require (
 
 // Knative deps (release-0.13)
 replace (
-	contrib.go.opencensus.io/exporter/stackdriver => contrib.go.opencensus.io/exporter/stackdriver v0.12.9-0.20191108183826-59d068f8d8ff
+	contrib.go.opencensus.io/exporter/stackdriver => /Users/wlynch/gohack/contrib.go.opencensus.io/exporter/stackdriver // was contrib.go.opencensus.io/exporter/stackdriver => contrib.go.opencensus.io/exporter/stackdriver v0.12.9-0.20191108183826-59d068f8d8ff
 	knative.dev/caching => knative.dev/caching v0.0.0-20200116200605-67bca2c83dfa
 	knative.dev/pkg => knative.dev/pkg v0.0.0-20200227193851-2fe8db300072
 	knative.dev/pkg/vendor/github.com/spf13/pflag => github.com/spf13/pflag v1.0.5
@@ -70,3 +70,5 @@ replace (
 	k8s.io/code-generator => k8s.io/code-generator v0.16.5
 	k8s.io/gengo => k8s.io/gengo v0.0.0-20190327210449-e17681d19d3a
 )
+
+replace github.com/google/go-containerregistry => /Users/wlynch/gohack/github.com/google/go-containerregistry
