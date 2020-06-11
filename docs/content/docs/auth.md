@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Authentication"
 linkTitle: "Authentication"
+description: "Configure authentication with external services."
 weight: 7
 ---
 -->

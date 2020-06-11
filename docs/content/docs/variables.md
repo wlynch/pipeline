@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Variable Substitutions"
 linkTitle: "Variable Substitutions"
+description: "Variable substituions supported by Tasks and Pipelines"
 weight: 15
 ---
 -->

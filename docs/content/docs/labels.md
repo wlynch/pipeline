@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Labels"
 linkTitle: "Labels"
+description: "Label propagation for Tekton resources."
 weight: 10
 ---
 -->

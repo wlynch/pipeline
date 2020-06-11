@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Conditions"
 linkTitle: "Conditions"
+description: "Define conditional execution within Pipelines."
 weight: 11
 ---
 -->

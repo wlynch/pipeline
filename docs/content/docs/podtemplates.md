@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Pod templates"
 linkTitle: "Pod templates"
+description: "Reference doc for Pod configuration within Tasks."
 weight: 12
 ---
 -->

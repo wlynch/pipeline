@@ -1,6 +1,8 @@
 <!--
 ---
+title: "PipelineRuns"
 linkTitle: "PipelineRuns"
+description: "Reference doc for PipelineRun configuration."
 weight: 4
 ---
 -->

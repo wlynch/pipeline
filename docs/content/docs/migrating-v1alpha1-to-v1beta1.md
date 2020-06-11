@@ -1,3 +1,12 @@
+<!--
+---
+title: "Migrating from v1alpha1 to v1beta1"
+linkTitle: "Migrating from v1alpha1 to v1beta1"
+description: "How to migrate from Tekton v1alpha1 to v1beta1."
+weight: 13
+---
+-->
+
 # Migrating From Tekton `v1alpha1` to Tekton `v1beta1`
 
 - [Changes to fields](#changes-to-fields)

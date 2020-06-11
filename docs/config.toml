@@ -78,7 +78,7 @@ version_menu = "Releases"
 github_repo = "https://github.com/tektoncd/pipelines"
 
 # Specify a value here if your content directory is not in your repo's root directory
-# github_subdir = "docs"
+github_subdir = "docs"
 
 # Google Custom Search Engine ID. Remove or comment out to disable search.
 gcs_engine_id = "013756393218025596041:6eajntqsa6c"
@@ -112,4 +112,4 @@ no = 'Sorry about that. <a href="https://github.com/tektoncd/website/issues/new"
 	name = "GitHub"
 	url = "https://github.com/tektoncd"
 	icon = "fab fa-github"
-    desc = "GitHub organization for the Tekton project"
+	desc = "GitHub organization for the Tekton project"

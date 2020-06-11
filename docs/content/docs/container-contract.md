@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Container Contracts"
 linkTitle: "Container Contracts"
+description: "Container requirements for Tasks."
 weight: 8
 ---
 -->

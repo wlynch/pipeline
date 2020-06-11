@@ -115,15 +115,6 @@ no = 'Sorry about that. <a href="https://github.com/tektoncd/website/issues/new"
 
 ignoreFiles = ["README\\.md$"]
 
-[[menu.main]]
-    name = "Pipelines"
-    weight = 1
-    url = "https://tekton.dev/pipelines"
-[[menu.main]]
-    name = "Triggers"
-    weight = 2
-    url = "https://tekton.dev/triggers"
-
 [[params.versions]]
   version = "master"
   url = "/docs"

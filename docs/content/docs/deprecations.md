@@ -1,7 +1,9 @@
 
 <!--
 ---
+title: "Deprecations"
 linkTitle: "Deprecations"
+description: "Policies for breaking changes and deprecations."
 weight: 16
 ---
 -->

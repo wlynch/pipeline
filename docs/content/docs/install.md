@@ -1,3 +1,12 @@
+<!--
+---
+title: Installation
+linkTitle: "Installation"
+weight: 1
+description: "Installing Tekton Pipelines."
+---
+--> 
+
 # Installing Tekton Pipelines
 
 This guide explains how to install Tekton Pipelines. It covers the following topics:

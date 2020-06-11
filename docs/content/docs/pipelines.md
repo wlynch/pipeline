@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Pipelines"
 linkTitle: "Pipelines"
+description: "Reference doc for Pipeline configuration."
 weight: 3
 ---
 -->

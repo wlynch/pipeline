@@ -1,6 +1,8 @@
 <!--
 ---
+title: "TaskRuns"
 linkTitle: "TaskRuns"
+description: "Reference doc for TaskRun configuration."
 weight: 2
 ---
 -->

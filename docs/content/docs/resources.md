@@ -1,6 +1,8 @@
 <!--
 ---
+title: "PipelineResources"
 linkTitle: "PipelineResources"
+description: "Reference doc for PipelineResource configuration."
 weight: 6
 ---
 -->

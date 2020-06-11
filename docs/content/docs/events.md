@@ -2,6 +2,7 @@
 ---
 title: Events
 linkTitle: "Events"
+description: "Execution events produced by Pipelines."
 weight: 2
 ---
 -->

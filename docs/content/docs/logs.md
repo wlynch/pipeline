@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Logs"
 linkTitle: "Logs"
+description: "How to find and view Pipeline logs."
 weight: 9
 ---
 -->

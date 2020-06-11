@@ -2,7 +2,7 @@
 ---
 title: Tasks
 linkTitle: "Tasks"
-description: Working with tasks
+description: "Reference doc for Task configuration."
 weight: 2
 ---
 -->

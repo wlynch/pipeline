@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Metrics"
 linkTitle: "Pipeline Metrics"
+description: "How to find and configure metrics produced by Tekton."
 weight: 14
 ---
 -->

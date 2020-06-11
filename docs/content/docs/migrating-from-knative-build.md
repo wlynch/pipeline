@@ -1,6 +1,8 @@
 <!--
 ---
-linkTitle: "Migration from KNative Build"
+title: "Migration from Knative Build"
+linkTitle: "Migration from Kinative Build"
+description: "How to migrate from an existing Knative Build setup to Tekton."
 weight: 13
 ---
 -->

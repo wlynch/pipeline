@@ -1,7 +1,11 @@
+<!--
 ---
-title: Tutorial
+title: "Tutorial"
+linkTitle: "Tutorial"
+description: "Run your first Pipeline!"
 weight: 1
 ---
+-->
 
 
 # Tekton Pipelines Tutorial

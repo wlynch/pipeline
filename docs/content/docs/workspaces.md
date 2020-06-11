@@ -1,6 +1,8 @@
 <!--
 ---
+title: "Workspaces"
 linkTitle: "Workspaces"
+description: "How to configure shared data workspaces between Tasks."
 weight: 5
 ---
 -->
