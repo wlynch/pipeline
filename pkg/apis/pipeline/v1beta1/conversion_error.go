@@ -31,8 +31,8 @@ const (
 
 // CannotConvertError is returned when a field cannot be converted.
 type CannotConvertError struct {
-	Message string
-	Field   string
+	Message string `protobuf:"bytes,1,opt,name=message"`
+	Field   string `protobuf:"bytes,2,opt,name=field"`
 }
 
 var _ error = (*CannotConvertError)(nil)

@@ -24,8 +24,8 @@ import (
 
 // ResultRef is a type that represents a reference to a task run result
 type ResultRef struct {
-	PipelineTask string
-	Result       string
+	PipelineTask string `protobuf:"bytes,1,opt,name=pipelineTask"`
+	Result       string `protobuf:"bytes,2,opt,name=result"`
 }
 
 const (

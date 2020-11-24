@@ -26,19 +26,19 @@ import (
 // WorkspaceDeclaration is a declaration of a volume that a Task requires.
 type WorkspaceDeclaration struct {
 	// Name is the name by which you can bind the volume at runtime.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Description is an optional human readable description of this volume.
 	// +optional
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,2,opt,name=description"`
 	// MountPath overrides the directory that the volume will be made available at.
 	// +optional
-	MountPath string `json:"mountPath,omitempty"`
+	MountPath string `json:"mountPath,omitempty" protobuf:"bytes,3,opt,name=mountPath"`
 	// ReadOnly dictates whether a mounted volume is writable. By default this
 	// field is false and so mounted volumes are writable.
-	ReadOnly bool `json:"readOnly,omitempty"`
+	ReadOnly bool `json:"readOnly,omitempty" protobuf:"varint,4,opt,name=readOnly"`
 	// Optional marks a Workspace as not being required in TaskRuns. By default
 	// this field is false and so declared workspaces are required.
-	Optional bool `json:"optional,omitempty"`
+	Optional bool `json:"optional,omitempty" protobuf:"varint,5,opt,name=optional"`
 }
 
 // GetMountPath returns the mountPath for w which is the MountPath if provided or the
@@ -53,30 +53,30 @@ func (w *WorkspaceDeclaration) GetMountPath() string {
 // WorkspaceBinding maps a Task's declared workspace to a Volume.
 type WorkspaceBinding struct {
 	// Name is the name of the workspace populated by the volume.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// SubPath is optionally a directory on the volume which should be used
 	// for this binding (i.e. the volume will be mounted at this sub directory).
 	// +optional
-	SubPath string `json:"subPath,omitempty"`
+	SubPath string `json:"subPath,omitempty" protobuf:"bytes,2,opt,name=subPath"`
 	// VolumeClaimTemplate is a template for a claim that will be created in the same namespace.
 	// The PipelineRun controller is responsible for creating a unique claim for each instance of PipelineRun.
 	// +optional
-	VolumeClaimTemplate *corev1.PersistentVolumeClaim `json:"volumeClaimTemplate,omitempty"`
+	VolumeClaimTemplate *corev1.PersistentVolumeClaim `json:"volumeClaimTemplate,omitempty" protobuf:"bytes,3,opt,name=volumeClaimTemplate"`
 	// PersistentVolumeClaimVolumeSource represents a reference to a
 	// PersistentVolumeClaim in the same namespace. Either this OR EmptyDir can be used.
 	// +optional
-	PersistentVolumeClaim *corev1.PersistentVolumeClaimVolumeSource `json:"persistentVolumeClaim,omitempty"`
+	PersistentVolumeClaim *corev1.PersistentVolumeClaimVolumeSource `json:"persistentVolumeClaim,omitempty" protobuf:"bytes,4,opt,name=persistentVolumeClaim"`
 	// EmptyDir represents a temporary directory that shares a Task's lifetime.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
 	// Either this OR PersistentVolumeClaim can be used.
 	// +optional
-	EmptyDir *corev1.EmptyDirVolumeSource `json:"emptyDir,omitempty"`
+	EmptyDir *corev1.EmptyDirVolumeSource `json:"emptyDir,omitempty" protobuf:"bytes,5,opt,name=emptyDir"`
 	// ConfigMap represents a configMap that should populate this workspace.
 	// +optional
-	ConfigMap *corev1.ConfigMapVolumeSource `json:"configMap,omitempty"`
+	ConfigMap *corev1.ConfigMapVolumeSource `json:"configMap,omitempty" protobuf:"bytes,6,opt,name=configMap"`
 	// Secret represents a secret that should populate this workspace.
 	// +optional
-	Secret *corev1.SecretVolumeSource `json:"secret,omitempty"`
+	Secret *corev1.SecretVolumeSource `json:"secret,omitempty" protobuf:"bytes,7,opt,name=secret"`
 }
 
 // WorkspacePipelineDeclaration creates a named slot in a Pipeline that a PipelineRun
@@ -88,26 +88,26 @@ type WorkspacePipelineDeclaration = PipelineWorkspaceDeclaration
 // is expected to populate with a workspace binding.
 type PipelineWorkspaceDeclaration struct {
 	// Name is the name of a workspace to be provided by a PipelineRun.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Description is a human readable string describing how the workspace will be
 	// used in the Pipeline. It can be useful to include a bit of detail about which
 	// tasks are intended to have access to the data on the workspace.
 	// +optional
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,2,opt,name=description"`
 	// Optional marks a Workspace as not being required in PipelineRuns. By default
 	// this field is false and so declared workspaces are required.
-	Optional bool `json:"optional,omitempty"`
+	Optional bool `json:"optional,omitempty" protobuf:"varint,3,opt,name=optional"`
 }
 
 // WorkspacePipelineTaskBinding describes how a workspace passed into the pipeline should be
 // mapped to a task's declared workspace.
 type WorkspacePipelineTaskBinding struct {
 	// Name is the name of the workspace as declared by the task
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Workspace is the name of the workspace declared by the pipeline
-	Workspace string `json:"workspace"`
+	Workspace string `json:"workspace" protobuf:"bytes,2,opt,name=workspace"`
 	// SubPath is optionally a directory on the volume which should be used
 	// for this binding (i.e. the volume will be mounted at this sub directory).
 	// +optional
-	SubPath string `json:"subPath,omitempty"`
+	SubPath string `json:"subPath,omitempty" protobuf:"bytes,3,opt,name=subPath"`
 }

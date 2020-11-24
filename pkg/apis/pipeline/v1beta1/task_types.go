@@ -45,11 +45,11 @@ const (
 type Task struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ObjectMeta `json:"metadata"`
+	metav1.ObjectMeta `json:"metadata" protobuf:"bytes,1,opt,name=metadata"`
 
 	// Spec holds the desired state of the Task from the client
 	// +optional
-	Spec TaskSpec `json:"spec"`
+	Spec TaskSpec `json:"spec" protobuf:"bytes,2,opt,name=spec"`
 }
 
 func (t *Task) TaskSpec() TaskSpec {
@@ -70,74 +70,74 @@ type TaskSpec struct {
 	// Resources are represented in TaskRuns as bindings to instances of
 	// PipelineResources.
 	// +optional
-	Resources *TaskResources `json:"resources,omitempty"`
+	Resources *TaskResources `json:"resources,omitempty" protobuf:"bytes,1,opt,name=resources"`
 
 	// Params is a list of input parameters required to run the task. Params
 	// must be supplied as inputs in TaskRuns unless they declare a default
 	// value.
 	// +optional
-	Params []ParamSpec `json:"params,omitempty"`
+	Params []ParamSpec `json:"params,omitempty" protobuf:"bytes,2,rep,name=params"`
 
 	// Description is a user-facing description of the task that may be
 	// used to populate a UI.
 	// +optional
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,3,opt,name=description"`
 
 	// Steps are the steps of the build; each step is run sequentially with the
 	// source mounted into /workspace.
-	Steps []Step `json:"steps,omitempty"`
+	Steps []Step `json:"steps,omitempty" protobuf:"bytes,4,rep,name=steps"`
 
 	// Volumes is a collection of volumes that are available to mount into the
 	// steps of the build.
-	Volumes []corev1.Volume `json:"volumes,omitempty"`
+	Volumes []corev1.Volume `json:"volumes,omitempty" protobuf:"bytes,5,rep,name=volumes"`
 
 	// StepTemplate can be used as the basis for all step containers within the
 	// Task, so that the steps inherit settings on the base container.
-	StepTemplate *corev1.Container `json:"stepTemplate,omitempty"`
+	StepTemplate *corev1.Container `json:"stepTemplate,omitempty" protobuf:"bytes,6,opt,name=stepTemplate"`
 
 	// Sidecars are run alongside the Task's step containers. They begin before
 	// the steps start and end after the steps complete.
-	Sidecars []Sidecar `json:"sidecars,omitempty"`
+	Sidecars []Sidecar `json:"sidecars,omitempty" protobuf:"bytes,7,rep,name=sidecars"`
 
 	// Workspaces are the volumes that this Task requires.
-	Workspaces []WorkspaceDeclaration `json:"workspaces,omitempty"`
+	Workspaces []WorkspaceDeclaration `json:"workspaces,omitempty" protobuf:"bytes,8,rep,name=workspaces"`
 
 	// Results are values that this Task can output
-	Results []TaskResult `json:"results,omitempty"`
+	Results []TaskResult `json:"results,omitempty" protobuf:"bytes,9,rep,name=results"`
 }
 
 // TaskResult used to describe the results of a task
 type TaskResult struct {
 	// Name the given name
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	// Description is a human-readable description of the result
 	// +optional
-	Description string `json:"description"`
+	Description string `json:"description" protobuf:"bytes,2,opt,name=description"`
 }
 
 // Step embeds the Container type, which allows it to include fields not
 // provided by Container.
 type Step struct {
-	corev1.Container `json:",inline"`
+	corev1.Container `json:",inline" protobuf:"bytes,1,opt,name=container"`
 
 	// Script is the contents of an executable file to execute.
 	//
 	// If Script is not empty, the Step cannot have an Command and the Args will be passed to the Script.
-	Script string `json:"script,omitempty"`
+	Script string `json:"script,omitempty" protobuf:"bytes,2,opt,name=script"`
 	// Timeout is the time after which the step times out. Defaults to never.
 	// Refer to Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
-	Timeout *metav1.Duration `json:"timeout,omitempty"`
+	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,3,opt,name=timeout"`
 }
 
 // Sidecar has nearly the same data structure as Step, consisting of a Container and an optional Script, but does not have the ability to timeout.
 type Sidecar struct {
-	corev1.Container `json:",inline"`
+	corev1.Container `json:",inline" protobuf:"bytes,1,opt,name=container"`
 
 	// Script is the contents of an executable file to execute.
 	//
 	// If Script is not empty, the Step cannot have an Command or Args.
-	Script string `json:"script,omitempty"`
+	Script string `json:"script,omitempty" protobuf:"bytes,2,opt,name=script"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -145,23 +145,23 @@ type Sidecar struct {
 type TaskList struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Task `json:"items"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []Task `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
 
 // TaskRef can be used to refer to a specific instance of a task.
 // Copied from CrossVersionObjectReference: https://github.com/kubernetes/kubernetes/blob/169df7434155cbbc22f1532cba8e0a9588e29ad8/pkg/apis/autoscaling/types.go#L64
 type TaskRef struct {
 	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	// TaskKind indicates the kind of the task, namespaced or cluster scoped.
-	Kind TaskKind `json:"kind,omitempty"`
+	Kind TaskKind `json:"kind,omitempty" protobuf:"bytes,2,opt,name=kind,casttype=TaskKind"`
 	// API version of the referent
 	// +optional
-	APIVersion string `json:"apiVersion,omitempty"`
+	APIVersion string `json:"apiVersion,omitempty" protobuf:"bytes,3,opt,name=apiVersion"`
 	// Bundle url reference to a Tekton Bundle.
 	// +optional
-	Bundle string `json:"bundle,omitempty"`
+	Bundle string `json:"bundle,omitempty" protobuf:"bytes,4,opt,name=bundle"`
 }
 
 // Check that Pipeline may be validated and defaulted.

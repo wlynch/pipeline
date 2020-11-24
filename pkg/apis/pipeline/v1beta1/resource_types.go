@@ -61,10 +61,10 @@ var AllResourceTypes = resource.AllResourceTypes
 type TaskResources struct {
 	// Inputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
-	Inputs []TaskResource `json:"inputs,omitempty"`
+	Inputs []TaskResource `json:"inputs,omitempty" protobuf:"bytes,1,rep,name=inputs"`
 	// Outputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
-	Outputs []TaskResource `json:"outputs,omitempty"`
+	Outputs []TaskResource `json:"outputs,omitempty" protobuf:"bytes,2,rep,name=outputs"`
 }
 
 // TaskResource defines an input or output Resource declared as a requirement
@@ -73,26 +73,26 @@ type TaskResources struct {
 // path to the volume mounted containing this Resource as an input (e.g.
 // an input Resource named `workspace` will be mounted at `/workspace`).
 type TaskResource struct {
-	ResourceDeclaration `json:",inline"`
+	ResourceDeclaration `json:",inline" protobuf:"bytes,1,opt,name=resourceDeclaration"`
 }
 
 // TaskRunResources allows a TaskRun to declare inputs and outputs TaskResourceBinding
 type TaskRunResources struct {
 	// Inputs holds the inputs resources this task was invoked with
-	Inputs []TaskResourceBinding `json:"inputs,omitempty"`
+	Inputs []TaskResourceBinding `json:"inputs,omitempty" protobuf:"bytes,1,rep,name=inputs"`
 	// Outputs holds the inputs resources this task was invoked with
-	Outputs []TaskResourceBinding `json:"outputs,omitempty"`
+	Outputs []TaskResourceBinding `json:"outputs,omitempty" protobuf:"bytes,2,rep,name=outputs"`
 }
 
 // TaskResourceBinding points to the PipelineResource that
 // will be used for the Task input or output called Name.
 type TaskResourceBinding struct {
-	PipelineResourceBinding `json:",inline"`
+	PipelineResourceBinding `json:",inline" protobuf:"bytes,1,opt,name=pipelineResourceBinding"`
 	// Paths will probably be removed in #1284, and then PipelineResourceBinding can be used instead.
 	// The optional Path field corresponds to a path on disk at which the Resource can be found
 	// (used when providing the resource via mounted volume, overriding the default logic to fetch the Resource).
 	// +optional
-	Paths []string `json:"paths,omitempty"`
+	Paths []string `json:"paths,omitempty" protobuf:"bytes,2,rep,name=paths"`
 }
 
 // ResourceDeclaration defines an input or output PipelineResource declared as a requirement
@@ -106,27 +106,27 @@ type ResourceDeclaration = resource.ResourceDeclaration
 // with a PipelineResource dependency that the Pipeline has declared
 type PipelineResourceBinding struct {
 	// Name is the name of the PipelineResource in the Pipeline's declaration
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	// ResourceRef is a reference to the instance of the actual PipelineResource
 	// that should be used
 	// +optional
-	ResourceRef *PipelineResourceRef `json:"resourceRef,omitempty"`
+	ResourceRef *PipelineResourceRef `json:"resourceRef,omitempty" protobuf:"bytes,2,opt,name=resourceRef"`
 
 	// ResourceSpec is specification of a resource that should be created and
 	// consumed by the task
 	// +optional
-	ResourceSpec *resource.PipelineResourceSpec `json:"resourceSpec,omitempty"`
+	ResourceSpec *resource.PipelineResourceSpec `json:"resourceSpec,omitempty" protobuf:"bytes,3,opt,name=resourceSpec"`
 }
 
 // PipelineResourceResult used to export the image name and digest as json
 type PipelineResourceResult struct {
-	Key          string `json:"key"`
-	Value        string `json:"value"`
-	ResourceName string `json:"resourceName,omitempty"`
+	Key          string `json:"key" protobuf:"bytes,1,opt,name=key"`
+	Value        string `json:"value" protobuf:"bytes,2,opt,name=value"`
+	ResourceName string `json:"resourceName,omitempty" protobuf:"bytes,3,opt,name=resourceName"`
 	// The field ResourceRef should be deprecated and removed in the next API version.
 	// See https://github.com/tektoncd/pipeline/issues/2694 for more information.
-	ResourceRef *PipelineResourceRef `json:"resourceRef,omitempty"`
-	ResultType  ResultType           `json:"type,omitempty"`
+	ResourceRef *PipelineResourceRef `json:"resourceRef,omitempty" protobuf:"bytes,4,opt,name=resourceRef"`
+	ResultType  ResultType           `json:"type,omitempty" protobuf:"bytes,5,opt,name=type,casttype=ResultType"`
 }
 
 // ResultType used to find out whether a PipelineResourceResult is from a task result or not
@@ -135,10 +135,10 @@ type ResultType string
 // PipelineResourceRef can be used to refer to a specific instance of a Resource
 type PipelineResourceRef struct {
 	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	// API version of the referent
 	// +optional
-	APIVersion string `json:"apiVersion,omitempty"`
+	APIVersion string `json:"apiVersion,omitempty" protobuf:"bytes,2,opt,name=apiVersion"`
 }
 
 // PipelineResourceInterface interface to be implemented by different PipelineResource types
@@ -167,9 +167,9 @@ type TaskModifier interface {
 
 // InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.
 type InternalTaskModifier struct {
-	StepsToPrepend []Step
-	StepsToAppend  []Step
-	Volumes        []v1.Volume
+	StepsToPrepend []Step      `protobuf:"bytes,1,rep,name=stepsToPrepend"`
+	StepsToAppend  []Step      `protobuf:"bytes,2,rep,name=stepsToAppend"`
+	Volumes        []v1.Volume `protobuf:"bytes,3,rep,name=volumes"`
 }
 
 // GetStepsToPrepend returns a set of Steps to prepend to the Task.

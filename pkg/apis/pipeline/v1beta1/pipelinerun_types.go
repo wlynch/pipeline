@@ -52,12 +52,12 @@ var (
 type PipelineRun struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
 	// +optional
-	Spec PipelineRunSpec `json:"spec,omitempty"`
+	Spec PipelineRunSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 	// +optional
-	Status PipelineRunStatus `json:"status,omitempty"`
+	Status PipelineRunStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
 func (pr *PipelineRun) GetName() string {
@@ -162,37 +162,37 @@ func (pr *PipelineRun) HasVolumeClaimTemplate() bool {
 // PipelineRunSpec defines the desired state of PipelineRun
 type PipelineRunSpec struct {
 	// +optional
-	PipelineRef *PipelineRef `json:"pipelineRef,omitempty"`
+	PipelineRef *PipelineRef `json:"pipelineRef,omitempty" protobuf:"bytes,1,opt,name=pipelineRef"`
 	// +optional
-	PipelineSpec *PipelineSpec `json:"pipelineSpec,omitempty"`
+	PipelineSpec *PipelineSpec `json:"pipelineSpec,omitempty" protobuf:"bytes,2,opt,name=pipelineSpec"`
 	// Resources is a list of bindings specifying which actual instances of
 	// PipelineResources to use for the resources the Pipeline has declared
 	// it needs.
-	Resources []PipelineResourceBinding `json:"resources,omitempty"`
+	Resources []PipelineResourceBinding `json:"resources,omitempty" protobuf:"bytes,3,rep,name=resources"`
 	// Params is a list of parameter names and values.
-	Params []Param `json:"params,omitempty"`
+	Params []Param `json:"params,omitempty" protobuf:"bytes,4,rep,name=params"`
 	// +optional
-	ServiceAccountName string `json:"serviceAccountName,omitempty"`
+	ServiceAccountName string `json:"serviceAccountName,omitempty" protobuf:"bytes,5,opt,name=serviceAccountName"`
 
 	// Deprecated: use taskRunSpecs.ServiceAccountName instead
 	// +optional
-	ServiceAccountNames []PipelineRunSpecServiceAccountName `json:"serviceAccountNames,omitempty"`
+	ServiceAccountNames []PipelineRunSpecServiceAccountName `json:"serviceAccountNames,omitempty" protobuf:"bytes,6,rep,name=serviceAccountNames"`
 	// Used for cancelling a pipelinerun (and maybe more later on)
 	// +optional
-	Status PipelineRunSpecStatus `json:"status,omitempty"`
+	Status PipelineRunSpecStatus `json:"status,omitempty" protobuf:"bytes,7,opt,name=status,casttype=PipelineRunSpecStatus"`
 	// Time after which the Pipeline times out. Defaults to never.
 	// Refer to Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	Timeout *metav1.Duration `json:"timeout,omitempty"`
+	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,8,opt,name=timeout"`
 	// PodTemplate holds pod specific configuration
-	PodTemplate *PodTemplate `json:"podTemplate,omitempty"`
+	PodTemplate *PodTemplate `json:"podTemplate,omitempty" protobuf:"bytes,9,opt,name=podTemplate"`
 	// Workspaces holds a set of workspace bindings that must match names
 	// with those declared in the pipeline.
 	// +optional
-	Workspaces []WorkspaceBinding `json:"workspaces,omitempty"`
+	Workspaces []WorkspaceBinding `json:"workspaces,omitempty" protobuf:"bytes,10,rep,name=workspaces"`
 	// TaskRunSpecs holds a set of runtime specs
 	// +optional
-	TaskRunSpecs []PipelineTaskRunSpec `json:"taskRunSpecs,omitempty"`
+	TaskRunSpecs []PipelineTaskRunSpec `json:"taskRunSpecs,omitempty" protobuf:"bytes,11,rep,name=taskRunSpecs"`
 }
 
 // PipelineRunSpecStatus defines the pipelinerun spec status the user can provide
@@ -208,21 +208,21 @@ const (
 // Copied from CrossVersionObjectReference: https://github.com/kubernetes/kubernetes/blob/169df7434155cbbc22f1532cba8e0a9588e29ad8/pkg/apis/autoscaling/types.go#L64
 type PipelineRef struct {
 	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	// API version of the referent
 	// +optional
-	APIVersion string `json:"apiVersion,omitempty"`
+	APIVersion string `json:"apiVersion,omitempty" protobuf:"bytes,2,opt,name=apiVersion"`
 	// Bundle url reference to a Tekton Bundle.
 	// +optional
-	Bundle string `json:"bundle,omitempty"`
+	Bundle string `json:"bundle,omitempty" protobuf:"bytes,3,opt,name=bundle"`
 }
 
 // PipelineRunStatus defines the observed state of PipelineRun
 type PipelineRunStatus struct {
-	duckv1beta1.Status `json:",inline"`
+	duckv1beta1.Status `json:",inline" protobuf:"bytes,1,opt,name=status"`
 
 	// PipelineRunStatusFields inlines the status fields.
-	PipelineRunStatusFields `json:",inline"`
+	PipelineRunStatusFields `json:",inline" protobuf:"bytes,2,opt,name=pipelineRunStatusFields"`
 }
 
 // PipelineRunReason represents a reason for the pipeline run "Succeeded" condition
@@ -327,26 +327,26 @@ func (pr *PipelineRunStatus) MarkResourceNotConvertible(err *CannotConvertError)
 type PipelineRunStatusFields struct {
 	// StartTime is the time the PipelineRun is actually started.
 	// +optional
-	StartTime *metav1.Time `json:"startTime,omitempty"`
+	StartTime *metav1.Time `json:"startTime,omitempty" protobuf:"bytes,1,opt,name=startTime"`
 
 	// CompletionTime is the time the PipelineRun completed.
 	// +optional
-	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
+	CompletionTime *metav1.Time `json:"completionTime,omitempty" protobuf:"bytes,2,opt,name=completionTime"`
 
 	// map of PipelineRunTaskRunStatus with the taskRun name as the key
 	// +optional
-	TaskRuns map[string]*PipelineRunTaskRunStatus `json:"taskRuns,omitempty"`
+	TaskRuns map[string]*PipelineRunTaskRunStatus `json:"taskRuns,omitempty" protobuf:"bytes,3,rep,name=taskRuns"`
 
 	// PipelineResults are the list of results written out by the pipeline task's containers
 	// +optional
-	PipelineResults []PipelineRunResult `json:"pipelineResults,omitempty"`
+	PipelineResults []PipelineRunResult `json:"pipelineResults,omitempty" protobuf:"bytes,4,rep,name=pipelineResults"`
 
 	// PipelineRunSpec contains the exact spec used to instantiate the run
-	PipelineSpec *PipelineSpec `json:"pipelineSpec,omitempty"`
+	PipelineSpec *PipelineSpec `json:"pipelineSpec,omitempty" protobuf:"bytes,5,opt,name=pipelineSpec"`
 
 	// list of tasks that were skipped due to when expressions evaluating to false
 	// +optional
-	SkippedTasks []SkippedTask `json:"skippedTasks,omitempty"`
+	SkippedTasks []SkippedTask `json:"skippedTasks,omitempty" protobuf:"bytes,6,rep,name=skippedTasks"`
 }
 
 // SkippedTask is used to describe the Tasks that were skipped due to their When Expressions
@@ -354,50 +354,50 @@ type PipelineRunStatusFields struct {
 // about the When Expressions that caused this Task to be skipped.
 type SkippedTask struct {
 	// Name is the Pipeline Task name
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// WhenExpressions is the list of checks guarding the execution of the PipelineTask
 	// +optional
-	WhenExpressions []WhenExpression `json:"whenExpressions,omitempty"`
+	WhenExpressions []WhenExpression `json:"whenExpressions,omitempty" protobuf:"bytes,2,rep,name=whenExpressions"`
 }
 
 // PipelineRunResult used to describe the results of a pipeline
 type PipelineRunResult struct {
 	// Name is the result's name as declared by the Pipeline
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	// Value is the result returned from the execution of this PipelineRun
-	Value string `json:"value"`
+	Value string `json:"value" protobuf:"bytes,2,opt,name=value"`
 }
 
 // PipelineRunTaskRunStatus contains the name of the PipelineTask for this TaskRun and the TaskRun's Status
 type PipelineRunTaskRunStatus struct {
 	// PipelineTaskName is the name of the PipelineTask.
-	PipelineTaskName string `json:"pipelineTaskName,omitempty"`
+	PipelineTaskName string `json:"pipelineTaskName,omitempty" protobuf:"bytes,1,opt,name=pipelineTaskName"`
 	// Status is the TaskRunStatus for the corresponding TaskRun
 	// +optional
-	Status *TaskRunStatus `json:"status,omitempty"`
+	Status *TaskRunStatus `json:"status,omitempty" protobuf:"bytes,2,opt,name=status"`
 	// ConditionChecks maps the name of a condition check to its Status
 	// +optional
-	ConditionChecks map[string]*PipelineRunConditionCheckStatus `json:"conditionChecks,omitempty"`
+	ConditionChecks map[string]*PipelineRunConditionCheckStatus `json:"conditionChecks,omitempty" protobuf:"bytes,3,rep,name=conditionChecks"`
 	// WhenExpressions is the list of checks guarding the execution of the PipelineTask
 	// +optional
-	WhenExpressions []WhenExpression `json:"whenExpressions,omitempty"`
+	WhenExpressions []WhenExpression `json:"whenExpressions,omitempty" protobuf:"bytes,4,rep,name=whenExpressions"`
 }
 
 // PipelineRunConditionCheckStatus returns the condition check status
 type PipelineRunConditionCheckStatus struct {
 	// ConditionName is the name of the Condition
-	ConditionName string `json:"conditionName,omitempty"`
+	ConditionName string `json:"conditionName,omitempty" protobuf:"bytes,1,opt,name=conditionName"`
 	// Status is the ConditionCheckStatus for the corresponding ConditionCheck
 	// +optional
-	Status *ConditionCheckStatus `json:"status,omitempty"`
+	Status *ConditionCheckStatus `json:"status,omitempty" protobuf:"bytes,2,opt,name=status"`
 }
 
 // PipelineRunSpecServiceAccountName can be used to configure specific
 // ServiceAccountName for a concrete Task
 type PipelineRunSpecServiceAccountName struct {
-	TaskName           string `json:"taskName,omitempty"`
-	ServiceAccountName string `json:"serviceAccountName,omitempty"`
+	TaskName           string `json:"taskName,omitempty" protobuf:"bytes,1,opt,name=taskName"`
+	ServiceAccountName string `json:"serviceAccountName,omitempty" protobuf:"bytes,2,opt,name=serviceAccountName"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -406,23 +406,23 @@ type PipelineRunSpecServiceAccountName struct {
 type PipelineRunList struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []PipelineRun `json:"items,omitempty"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []PipelineRun `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
 }
 
 // PipelineTaskRun reports the results of running a step in the Task. Each
 // task has the potential to succeed or fail (based on the exit code)
 // and produces logs.
 type PipelineTaskRun struct {
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 }
 
 // PipelineTaskRunSpec  can be used to configure specific
 // specs for a concrete Task
 type PipelineTaskRunSpec struct {
-	PipelineTaskName       string       `json:"pipelineTaskName,omitempty"`
-	TaskServiceAccountName string       `json:"taskServiceAccountName,omitempty"`
-	TaskPodTemplate        *PodTemplate `json:"taskPodTemplate,omitempty"`
+	PipelineTaskName       string       `json:"pipelineTaskName,omitempty" protobuf:"bytes,1,opt,name=pipelineTaskName"`
+	TaskServiceAccountName string       `json:"taskServiceAccountName,omitempty" protobuf:"bytes,2,opt,name=taskServiceAccountName"`
+	TaskPodTemplate        *PodTemplate `json:"taskPodTemplate,omitempty" protobuf:"bytes,3,opt,name=taskPodTemplate"`
 }
 
 // GetTaskRunSpecs returns the task specific spec for a given

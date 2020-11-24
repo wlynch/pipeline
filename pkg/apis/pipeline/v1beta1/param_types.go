@@ -32,20 +32,20 @@ import (
 // or PipelineRun.
 type ParamSpec struct {
 	// Name declares the name by which a parameter is referenced.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Type is the user-specified type of the parameter. The possible types
 	// are currently "string" and "array", and "string" is the default.
 	// +optional
-	Type ParamType `json:"type,omitempty"`
+	Type ParamType `json:"type,omitempty" protobuf:"bytes,2,opt,name=type,casttype=ParamType"`
 	// Description is a user-facing description of the parameter that may be
 	// used to populate a UI.
 	// +optional
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,3,opt,name=description"`
 	// Default is the value a parameter takes if no input value is supplied. If
 	// default is set, a Task may be executed without a supplied value for the
 	// parameter.
 	// +optional
-	Default *ArrayOrString `json:"default,omitempty"`
+	Default *ArrayOrString `json:"default,omitempty" protobuf:"bytes,4,opt,name=default"`
 }
 
 // SetDefaults set the default type
@@ -67,8 +67,8 @@ type ResourceParam = resource.ResourceParam
 
 // Param declares an ArrayOrString to use for the parameter called name.
 type Param struct {
-	Name  string        `json:"name"`
-	Value ArrayOrString `json:"value"`
+	Name  string        `json:"name" protobuf:"bytes,1,opt,name=name"`
+	Value ArrayOrString `json:"value" protobuf:"bytes,2,opt,name=value"`
 }
 
 // ParamType indicates the type of an input parameter;
@@ -90,9 +90,9 @@ var AllParamTypes = []ParamType{ParamTypeString, ParamTypeArray}
 // Used in JSON unmarshalling so that a single JSON field can accept
 // either an individual string or an array of strings.
 type ArrayOrString struct {
-	Type      ParamType `json:"type"` // Represents the stored type of ArrayOrString.
-	StringVal string    `json:"stringVal"`
-	ArrayVal  []string  `json:"arrayVal"`
+	Type      ParamType `json:"type" protobuf:"bytes,1,opt,name=type,casttype=ParamType"` // Represents the stored type of ArrayOrString.
+	StringVal string    `json:"stringVal" protobuf:"bytes,2,opt,name=stringVal"`
+	ArrayVal  []string  `json:"arrayVal" protobuf:"bytes,3,rep,name=arrayVal"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface.

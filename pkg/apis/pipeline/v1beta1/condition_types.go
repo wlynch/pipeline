@@ -47,10 +47,10 @@ func (cc *ConditionCheck) IsSuccessful() bool {
 
 // ConditionCheckStatus defines the observed state of ConditionCheck
 type ConditionCheckStatus struct {
-	duckv1beta1.Status `json:",inline"`
+	duckv1beta1.Status `json:",inline" protobuf:"bytes,1,opt,name=status"`
 
 	// ConditionCheckStatusFields inlines the status fields.
-	ConditionCheckStatusFields `json:",inline"`
+	ConditionCheckStatusFields `json:",inline" protobuf:"bytes,2,opt,name=conditionCheckStatusFields"`
 }
 
 // ConditionCheckStatusFields holds the fields of ConfigurationCheck's status.
@@ -58,17 +58,17 @@ type ConditionCheckStatus struct {
 // consume these fields via duck typing.
 type ConditionCheckStatusFields struct {
 	// PodName is the name of the pod responsible for executing this condition check.
-	PodName string `json:"podName"`
+	PodName string `json:"podName" protobuf:"bytes,1,opt,name=podName"`
 
 	// StartTime is the time the check is actually started.
 	// +optional
-	StartTime *metav1.Time `json:"startTime,omitempty"`
+	StartTime *metav1.Time `json:"startTime,omitempty" protobuf:"bytes,2,opt,name=startTime"`
 
 	// CompletionTime is the time the check pod completed.
 	// +optional
-	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
+	CompletionTime *metav1.Time `json:"completionTime,omitempty" protobuf:"bytes,3,opt,name=completionTime"`
 
 	// Check describes the state of the check container.
 	// +optional
-	Check corev1.ContainerState `json:"check,omitempty"`
+	Check corev1.ContainerState `json:"check,omitempty" protobuf:"bytes,4,opt,name=check"`
 }

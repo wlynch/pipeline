@@ -24,29 +24,29 @@ import (
 // to determine whether the Task should be executed or skipped
 type WhenExpression struct {
 	// Input is the string for guard checking which can be a static input or an output from a parent Task
-	Input string `json:"input"`
+	Input string `json:"input" protobuf:"bytes,1,opt,name=input"`
 
 	// DeprecatedInput for backwards compatibility with <v0.17
 	// it is the string for guard checking which can be a static input or an output from a parent Task
 	// +optional
-	DeprecatedInput string `json:"Input,omitempty"`
+	//DeprecatedInput string `json:"Input,omitempty"`
 
 	// Operator that represents an Input's relationship to the values
-	Operator selection.Operator `json:"operator"`
+	Operator selection.Operator `json:"operator" protobuf:"bytes,2,opt,name=operator,casttype=k8s.io/apimachinery/pkg/selection.Operator"`
 
 	// DeprecatedOperator for backwards compatibility with <v0.17
 	// it represents a DeprecatedInput's relationship to the DeprecatedValues
 	// +optional
-	DeprecatedOperator selection.Operator `json:"Operator,omitempty"`
+	//DeprecatedOperator selection.Operator `json:"Operator,omitempty"`
 
 	// Values is an array of strings, which is compared against the input, for guard checking
 	// It must be non-empty
-	Values []string `json:"values"`
+	Values []string `json:"values" protobuf:"bytes,3,rep,name=values"`
 
 	// DeprecatedValues for backwards compatibility with <v0.17
 	// it represents a DeprecatedInput's relationship to the DeprecatedValues
 	// +optional
-	DeprecatedValues []string `json:"Values,omitempty"`
+	//DeprecatedValues []string `json:"Values,omitempty"`
 }
 
 // GetInput returns the input string for guard checking

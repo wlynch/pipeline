@@ -31,11 +31,11 @@ import (
 type ClusterTask struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
 	// Spec holds the desired state of the Task from the client
 	// +optional
-	Spec TaskSpec `json:"spec,omitempty"`
+	Spec TaskSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -44,8 +44,8 @@ type ClusterTask struct {
 type ClusterTaskList struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ClusterTask `json:"items"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []ClusterTask `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
 
 func (t *ClusterTask) TaskSpec() TaskSpec {

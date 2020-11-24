@@ -43,29 +43,29 @@ var (
 // TaskRunSpec defines the desired state of TaskRun
 type TaskRunSpec struct {
 	// +optional
-	Params []Param `json:"params,omitempty"`
+	Params []Param `json:"params,omitempty" protobuf:"bytes,1,rep,name=params"`
 	// +optional
-	Resources *TaskRunResources `json:"resources,omitempty"`
+	Resources *TaskRunResources `json:"resources,omitempty" protobuf:"bytes,2,opt,name=resources"`
 	// +optional
-	ServiceAccountName string `json:"serviceAccountName"`
+	ServiceAccountName string `json:"serviceAccountName" protobuf:"bytes,3,opt,name=serviceAccountName"`
 	// no more than one of the TaskRef and TaskSpec may be specified.
 	// +optional
-	TaskRef *TaskRef `json:"taskRef,omitempty"`
+	TaskRef *TaskRef `json:"taskRef,omitempty" protobuf:"bytes,4,opt,name=taskRef"`
 	// +optional
-	TaskSpec *TaskSpec `json:"taskSpec,omitempty"`
+	TaskSpec *TaskSpec `json:"taskSpec,omitempty" protobuf:"bytes,5,opt,name=taskSpec"`
 	// Used for cancelling a taskrun (and maybe more later on)
 	// +optional
-	Status TaskRunSpecStatus `json:"status,omitempty"`
+	Status TaskRunSpecStatus `json:"status,omitempty" protobuf:"bytes,6,opt,name=status,casttype=TaskRunSpecStatus"`
 	// Time after which the build times out. Defaults to 1 hour.
 	// Specified build timeout should be less than 24h.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	Timeout *metav1.Duration `json:"timeout,omitempty"`
+	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,7,opt,name=timeout"`
 	// PodTemplate holds pod specific configuration
-	PodTemplate *PodTemplate `json:"podTemplate,omitempty"`
+	PodTemplate *PodTemplate `json:"podTemplate,omitempty" protobuf:"bytes,8,opt,name=podTemplate"`
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional
-	Workspaces []WorkspaceBinding `json:"workspaces,omitempty"`
+	Workspaces []WorkspaceBinding `json:"workspaces,omitempty" protobuf:"bytes,9,rep,name=workspaces"`
 }
 
 // TaskRunSpecStatus defines the taskrun spec status the user can provide
@@ -80,25 +80,25 @@ const (
 // TaskRunInputs holds the input values that this task was invoked with.
 type TaskRunInputs struct {
 	// +optional
-	Resources []TaskResourceBinding `json:"resources,omitempty"`
+	Resources []TaskResourceBinding `json:"resources,omitempty" protobuf:"bytes,1,rep,name=resources"`
 	// +optional
-	Params []Param `json:"params,omitempty"`
+	Params []Param `json:"params,omitempty" protobuf:"bytes,2,rep,name=params"`
 }
 
 // TaskRunOutputs holds the output values that this task was invoked with.
 type TaskRunOutputs struct {
 	// +optional
-	Resources []TaskResourceBinding `json:"resources,omitempty"`
+	Resources []TaskResourceBinding `json:"resources,omitempty" protobuf:"bytes,1,rep,name=resources"`
 }
 
 var taskRunCondSet = apis.NewBatchConditionSet()
 
 // TaskRunStatus defines the observed state of TaskRun
 type TaskRunStatus struct {
-	duckv1beta1.Status `json:",inline"`
+	duckv1beta1.Status `json:",inline" protobuf:"bytes,1,opt,name=status"`
 
 	// TaskRunStatusFields inlines the status fields.
-	TaskRunStatusFields `json:",inline"`
+	TaskRunStatusFields `json:",inline" protobuf:"bytes,2,opt,name=taskRunStatusFields"`
 }
 
 // TaskRunReason is an enum used to store all TaskRun reason for
@@ -179,54 +179,54 @@ func (trs *TaskRunStatus) MarkResourceFailed(reason TaskRunReason, err error) {
 // via duck typing.
 type TaskRunStatusFields struct {
 	// PodName is the name of the pod responsible for executing this task's steps.
-	PodName string `json:"podName"`
+	PodName string `json:"podName" protobuf:"bytes,1,opt,name=podName"`
 
 	// StartTime is the time the build is actually started.
 	// +optional
-	StartTime *metav1.Time `json:"startTime,omitempty"`
+	StartTime *metav1.Time `json:"startTime,omitempty" protobuf:"bytes,2,opt,name=startTime"`
 
 	// CompletionTime is the time the build completed.
 	// +optional
-	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
+	CompletionTime *metav1.Time `json:"completionTime,omitempty" protobuf:"bytes,3,opt,name=completionTime"`
 
 	// Steps describes the state of each build step container.
 	// +optional
-	Steps []StepState `json:"steps,omitempty"`
+	Steps []StepState `json:"steps,omitempty" protobuf:"bytes,4,rep,name=steps"`
 
 	// CloudEvents describe the state of each cloud event requested via a
 	// CloudEventResource.
 	// +optional
-	CloudEvents []CloudEventDelivery `json:"cloudEvents,omitempty"`
+	CloudEvents []CloudEventDelivery `json:"cloudEvents,omitempty" protobuf:"bytes,5,rep,name=cloudEvents"`
 
 	// RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures.
 	// All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
 	// +optional
-	RetriesStatus []TaskRunStatus `json:"retriesStatus,omitempty"`
+	RetriesStatus []TaskRunStatus `json:"retriesStatus,omitempty" protobuf:"bytes,6,rep,name=retriesStatus"`
 
 	// Results from Resources built during the taskRun. currently includes
 	// the digest of build container images
 	// +optional
-	ResourcesResult []PipelineResourceResult `json:"resourcesResult,omitempty"`
+	ResourcesResult []PipelineResourceResult `json:"resourcesResult,omitempty" protobuf:"bytes,7,rep,name=resourcesResult"`
 
 	// TaskRunResults are the list of results written out by the task's containers
 	// +optional
-	TaskRunResults []TaskRunResult `json:"taskResults,omitempty"`
+	TaskRunResults []TaskRunResult `json:"taskResults,omitempty" protobuf:"bytes,8,rep,name=taskResults"`
 
 	// The list has one entry per sidecar in the manifest. Each entry is
 	// represents the imageid of the corresponding sidecar.
-	Sidecars []SidecarState `json:"sidecars,omitempty"`
+	Sidecars []SidecarState `json:"sidecars,omitempty" protobuf:"bytes,9,rep,name=sidecars"`
 
 	// TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.
-	TaskSpec *TaskSpec `json:"taskSpec,omitempty"`
+	TaskSpec *TaskSpec `json:"taskSpec,omitempty" protobuf:"bytes,10,opt,name=taskSpec"`
 }
 
 // TaskRunResult used to describe the results of a task
 type TaskRunResult struct {
 	// Name the given name
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	// Value the given value of the result
-	Value string `json:"value"`
+	Value string `json:"value" protobuf:"bytes,2,opt,name=value"`
 }
 
 // GetOwnerReference gets the task run as owner reference for any related objects
@@ -272,26 +272,26 @@ func (trs *TaskRunStatus) SetCondition(newCond *apis.Condition) {
 
 // StepState reports the results of running a step in a Task.
 type StepState struct {
-	corev1.ContainerState `json:",inline"`
-	Name                  string `json:"name,omitempty"`
-	ContainerName         string `json:"container,omitempty"`
-	ImageID               string `json:"imageID,omitempty"`
+	corev1.ContainerState `json:",inline" protobuf:"bytes,1,opt,name=containerState"`
+	Name                  string `json:"name,omitempty" protobuf:"bytes,2,opt,name=name"`
+	ContainerName         string `json:"container,omitempty" protobuf:"bytes,3,opt,name=container"`
+	ImageID               string `json:"imageID,omitempty" protobuf:"bytes,4,opt,name=imageID"`
 }
 
 // SidecarState reports the results of running a sidecar in a Task.
 type SidecarState struct {
-	corev1.ContainerState `json:",inline"`
-	Name                  string `json:"name,omitempty"`
-	ContainerName         string `json:"container,omitempty"`
-	ImageID               string `json:"imageID,omitempty"`
+	corev1.ContainerState `json:",inline" protobuf:"bytes,1,opt,name=containerState"`
+	Name                  string `json:"name,omitempty" protobuf:"bytes,2,opt,name=name"`
+	ContainerName         string `json:"container,omitempty" protobuf:"bytes,3,opt,name=container"`
+	ImageID               string `json:"imageID,omitempty" protobuf:"bytes,4,opt,name=imageID"`
 }
 
 // CloudEventDelivery is the target of a cloud event along with the state of
 // delivery.
 type CloudEventDelivery struct {
 	// Target points to an addressable
-	Target string                  `json:"target,omitempty"`
-	Status CloudEventDeliveryState `json:"status,omitempty"`
+	Target string                  `json:"target,omitempty" protobuf:"bytes,1,opt,name=target"`
+	Status CloudEventDeliveryState `json:"status,omitempty" protobuf:"bytes,2,opt,name=status"`
 }
 
 // CloudEventCondition is a string that represents the condition of the event.
@@ -311,14 +311,14 @@ const (
 // CloudEventDeliveryState reports the state of a cloud event to be sent.
 type CloudEventDeliveryState struct {
 	// Current status
-	Condition CloudEventCondition `json:"condition,omitempty"`
+	Condition CloudEventCondition `json:"condition,omitempty" protobuf:"bytes,1,opt,name=condition,casttype=CloudEventCondition"`
 	// SentAt is the time at which the last attempt to send the event was made
 	// +optional
-	SentAt *metav1.Time `json:"sentAt,omitempty"`
+	SentAt *metav1.Time `json:"sentAt,omitempty" protobuf:"bytes,2,opt,name=sentAt"`
 	// Error is the text of error (if any)
-	Error string `json:"message"`
+	Error string `json:"message" protobuf:"bytes,3,opt,name=message"`
 	// RetryCount is the number of attempts of sending the cloud event
-	RetryCount int32 `json:"retryCount"`
+	RetryCount int32 `json:"retryCount" protobuf:"varint,4,opt,name=retryCount"`
 }
 
 // +genclient
@@ -333,12 +333,12 @@ type CloudEventDeliveryState struct {
 type TaskRun struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
 	// +optional
-	Spec TaskRunSpec `json:"spec,omitempty"`
+	Spec TaskRunSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 	// +optional
-	Status TaskRunStatus `json:"status,omitempty"`
+	Status TaskRunStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -347,8 +347,8 @@ type TaskRun struct {
 type TaskRunList struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []TaskRun `json:"items"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []TaskRun `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
 
 // GetBuildPodRef for task

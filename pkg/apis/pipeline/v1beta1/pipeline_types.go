@@ -32,11 +32,11 @@ import (
 type Pipeline struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
 	// Spec holds the desired state of the Pipeline from the client
 	// +optional
-	Spec PipelineSpec `json:"spec"`
+	Spec PipelineSpec `json:"spec" protobuf:"bytes,2,opt,name=spec"`
 }
 
 func (p *Pipeline) PipelineMetadata() metav1.ObjectMeta {
@@ -56,55 +56,55 @@ type PipelineSpec struct {
 	// Description is a user-facing description of the pipeline that may be
 	// used to populate a UI.
 	// +optional
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" protobuf:"bytes,1,opt,name=description"`
 	// Resources declares the names and types of the resources given to the
 	// Pipeline's tasks as inputs and outputs.
-	Resources []PipelineDeclaredResource `json:"resources,omitempty"`
+	Resources []PipelineDeclaredResource `json:"resources,omitempty" protobuf:"bytes,2,rep,name=resources"`
 	// Tasks declares the graph of Tasks that execute when this Pipeline is run.
-	Tasks []PipelineTask `json:"tasks,omitempty"`
+	Tasks []PipelineTask `json:"tasks,omitempty" protobuf:"bytes,3,rep,name=tasks"`
 	// Params declares a list of input parameters that must be supplied when
 	// this Pipeline is run.
-	Params []ParamSpec `json:"params,omitempty"`
+	Params []ParamSpec `json:"params,omitempty" protobuf:"bytes,4,rep,name=params"`
 	// Workspaces declares a set of named workspaces that are expected to be
 	// provided by a PipelineRun.
 	// +optional
-	Workspaces []PipelineWorkspaceDeclaration `json:"workspaces,omitempty"`
+	Workspaces []PipelineWorkspaceDeclaration `json:"workspaces,omitempty" protobuf:"bytes,5,rep,name=workspaces"`
 	// Results are values that this pipeline can output once run
 	// +optional
-	Results []PipelineResult `json:"results,omitempty"`
+	Results []PipelineResult `json:"results,omitempty" protobuf:"bytes,6,rep,name=results"`
 	// Finally declares the list of Tasks that execute just before leaving the Pipeline
 	// i.e. either after all Tasks are finished executing successfully
 	// or after a failure which would result in ending the Pipeline
-	Finally []PipelineTask `json:"finally,omitempty"`
+	Finally []PipelineTask `json:"finally,omitempty" protobuf:"bytes,7,rep,name=finally"`
 }
 
 // PipelineResult used to describe the results of a pipeline
 type PipelineResult struct {
 	// Name the given name
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	// Description is a human-readable description of the result
 	// +optional
-	Description string `json:"description"`
+	Description string `json:"description" protobuf:"bytes,2,opt,name=description"`
 
 	// Value the expression used to retrieve the value
-	Value string `json:"value"`
+	Value string `json:"value" protobuf:"bytes,3,opt,name=value"`
 }
 
 type PipelineTaskMetadata struct {
 	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty" protobuf:"bytes,1,rep,name=labels"`
 
 	// +optional
-	Annotations map[string]string `json:"annotations,omitempty"`
+	Annotations map[string]string `json:"annotations,omitempty" protobuf:"bytes,2,rep,name=annotations"`
 }
 
 type EmbeddedTask struct {
 	// +optional
-	Metadata PipelineTaskMetadata `json:"metadata,omitempty"`
+	Metadata PipelineTaskMetadata `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
 	// TaskSpec is a specification of a task
-	TaskSpec `json:",inline,omitempty"`
+	TaskSpec `json:",inline,omitempty" protobuf:"bytes,2,opt,name=taskSpec"`
 }
 
 // PipelineTask defines a task in a Pipeline, passing inputs from both
@@ -113,52 +113,52 @@ type PipelineTask struct {
 	// Name is the name of this task within the context of a Pipeline. Name is
 	// used as a coordinate with the `from` and `runAfter` fields to establish
 	// the execution order of tasks relative to one another.
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 
 	// TaskRef is a reference to a task definition.
 	// +optional
-	TaskRef *TaskRef `json:"taskRef,omitempty"`
+	TaskRef *TaskRef `json:"taskRef,omitempty" protobuf:"bytes,2,opt,name=taskRef"`
 
 	// TaskSpec is a specification of a task
 	// +optional
-	TaskSpec *EmbeddedTask `json:"taskSpec,omitempty"`
+	TaskSpec *EmbeddedTask `json:"taskSpec,omitempty" protobuf:"bytes,3,opt,name=taskSpec"`
 
 	// Conditions is a list of conditions that need to be true for the task to run
 	// Conditions are deprecated, use WhenExpressions instead
 	// +optional
-	Conditions []PipelineTaskCondition `json:"conditions,omitempty"`
+	Conditions []PipelineTaskCondition `json:"conditions,omitempty" protobuf:"bytes,4,rep,name=conditions"`
 
 	// WhenExpressions is a list of when expressions that need to be true for the task to run
 	// +optional
-	WhenExpressions WhenExpressions `json:"when,omitempty"`
+	WhenExpressions WhenExpressions `json:"when,omitempty" protobuf:"bytes,5,rep,name=when"`
 
 	// Retries represents how many times this task should be retried in case of task failure: ConditionSucceeded set to False
 	// +optional
-	Retries int `json:"retries,omitempty"`
+	Retries int `json:"retries,omitempty" protobuf:"varint,6,opt,name=retries"`
 
 	// RunAfter is the list of PipelineTask names that should be executed before
 	// this Task executes. (Used to force a specific ordering in graph execution.)
 	// +optional
-	RunAfter []string `json:"runAfter,omitempty"`
+	RunAfter []string `json:"runAfter,omitempty" protobuf:"bytes,7,rep,name=runAfter"`
 
 	// Resources declares the resources given to this task as inputs and
 	// outputs.
 	// +optional
-	Resources *PipelineTaskResources `json:"resources,omitempty"`
+	Resources *PipelineTaskResources `json:"resources,omitempty" protobuf:"bytes,8,opt,name=resources"`
 	// Parameters declares parameters passed to this task.
 	// +optional
-	Params []Param `json:"params,omitempty"`
+	Params []Param `json:"params,omitempty" protobuf:"bytes,9,rep,name=params"`
 
 	// Workspaces maps workspaces from the pipeline spec to the workspaces
 	// declared in the Task.
 	// +optional
-	Workspaces []WorkspacePipelineTaskBinding `json:"workspaces,omitempty"`
+	Workspaces []WorkspacePipelineTaskBinding `json:"workspaces,omitempty" protobuf:"bytes,10,rep,name=workspaces"`
 
 	// Time after which the TaskRun times out. Defaults to 1 hour.
 	// Specified TaskRun timeout should be less than 24h.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	Timeout *metav1.Duration `json:"timeout,omitempty"`
+	Timeout *metav1.Duration `json:"timeout,omitempty" protobuf:"bytes,11,opt,name=timeout"`
 }
 
 func (pt *PipelineTask) TaskSpecMetadata() PipelineTaskMetadata {
@@ -264,22 +264,22 @@ func (l PipelineTaskList) Items() []dag.Task {
 
 // PipelineTaskParam is used to provide arbitrary string parameters to a Task.
 type PipelineTaskParam struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+	Name  string `json:"name" protobuf:"bytes,1,opt,name=name"`
+	Value string `json:"value" protobuf:"bytes,2,opt,name=value"`
 }
 
 // PipelineTaskCondition allows a PipelineTask to declare a Condition to be evaluated before
 // the Task is run.
 type PipelineTaskCondition struct {
 	// ConditionRef is the name of the Condition to use for the conditionCheck
-	ConditionRef string `json:"conditionRef"`
+	ConditionRef string `json:"conditionRef" protobuf:"bytes,1,opt,name=conditionRef"`
 
 	// Params declare parameters passed to this Condition
 	// +optional
-	Params []Param `json:"params,omitempty"`
+	Params []Param `json:"params,omitempty" protobuf:"bytes,2,rep,name=params"`
 
 	// Resources declare the resources provided to this Condition as input
-	Resources []PipelineTaskInputResource `json:"resources,omitempty"`
+	Resources []PipelineTaskInputResource `json:"resources,omitempty" protobuf:"bytes,3,rep,name=resources"`
 }
 
 // PipelineDeclaredResource is used by a Pipeline to declare the types of the
@@ -290,13 +290,13 @@ type PipelineDeclaredResource struct {
 	// It does not directly correspond to the name of any PipelineResources Task
 	// inputs or outputs, and it does not correspond to the actual names of the
 	// PipelineResources that will be bound in the PipelineRun.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Type is the type of the PipelineResource.
-	Type PipelineResourceType `json:"type"`
+	Type PipelineResourceType `json:"type" protobuf:"bytes,2,opt,name=type"`
 	// Optional declares the resource as optional.
 	// optional: true - the resource is considered optional
 	// optional: false - the resource is considered required (default/equivalent of not specifying it)
-	Optional bool `json:"optional,omitempty"`
+	Optional bool `json:"optional,omitempty" protobuf:"varint,3,opt,name=optional"`
 }
 
 // PipelineTaskResources allows a Pipeline to declare how its DeclaredPipelineResources
@@ -304,10 +304,10 @@ type PipelineDeclaredResource struct {
 type PipelineTaskResources struct {
 	// Inputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
-	Inputs []PipelineTaskInputResource `json:"inputs,omitempty"`
+	Inputs []PipelineTaskInputResource `json:"inputs,omitempty" protobuf:"bytes,1,rep,name=inputs"`
 	// Outputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
-	Outputs []PipelineTaskOutputResource `json:"outputs,omitempty"`
+	Outputs []PipelineTaskOutputResource `json:"outputs,omitempty" protobuf:"bytes,2,rep,name=outputs"`
 }
 
 // PipelineTaskInputResource maps the name of a declared PipelineResource input
@@ -315,13 +315,13 @@ type PipelineTaskResources struct {
 // that should be used. This input may come from a previous task.
 type PipelineTaskInputResource struct {
 	// Name is the name of the PipelineResource as declared by the Task.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Resource is the name of the DeclaredPipelineResource to use.
-	Resource string `json:"resource"`
+	Resource string `json:"resource" protobuf:"bytes,2,opt,name=resource"`
 	// From is the list of PipelineTask names that the resource has to come from.
 	// (Implies an ordering in the execution graph.)
 	// +optional
-	From []string `json:"from,omitempty"`
+	From []string `json:"from,omitempty" protobuf:"bytes,3,rep,name=from"`
 }
 
 // PipelineTaskOutputResource maps the name of a declared PipelineResource output
@@ -329,9 +329,9 @@ type PipelineTaskInputResource struct {
 // that should be used.
 type PipelineTaskOutputResource struct {
 	// Name is the name of the PipelineResource as declared by the Task.
-	Name string `json:"name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	// Resource is the name of the DeclaredPipelineResource to use.
-	Resource string `json:"resource"`
+	Resource string `json:"resource" protobuf:"bytes,2,opt,name=resource"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -340,6 +340,6 @@ type PipelineTaskOutputResource struct {
 type PipelineList struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Pipeline `json:"items"`
+	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	Items           []Pipeline `json:"items" protobuf:"bytes,2,rep,name=items"`
 }
