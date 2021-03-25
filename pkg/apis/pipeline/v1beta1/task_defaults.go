@@ -33,4 +33,6 @@ func (ts *TaskSpec) SetDefaults(ctx context.Context) {
 	for i := range ts.Params {
 		ts.Params[i].SetDefaults(ctx)
 	}
+	ctx = AddContextParamSpec(ctx, ts.Params)
+	ts.Params = GetContextParamSpecs(ctx)
 }

@@ -167,3 +167,22 @@ func validateArrayVariableInTaskParameters(value, prefix string, stringVars sets
 	errs := substitution.ValidateVariableP(value, prefix, stringVars)
 	return errs.Also(substitution.ValidateVariableIsolatedP(value, prefix, arrayVars))
 }
+
+func inheritParams(a []Param, b []ParamSpec) []ParamSpec {
+	merged := make(map[string]ParamSpec)
+	for _, p := range a {
+		merged[p.Name] = ParamSpec{
+			Name: p.Name,
+			Type: p.Value.Type,
+		}
+	}
+	for _, p := range b {
+		merged[p.Name] = p
+	}
+
+	out := make([]ParamSpec, 0, len(merged))
+	for _, v := range merged {
+		out = append(out, v)
+	}
+	return out
+}

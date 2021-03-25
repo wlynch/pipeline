@@ -18,6 +18,7 @@ package v1beta1_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -83,9 +84,66 @@ func TestPipelineRunSpec_SetDefaults(t *testing.T) {
 				},
 			},
 		},
+		{
+			desc: "implicit params",
+			prs: &v1beta1.PipelineRunSpec{
+				Params: []v1beta1.Param{{
+					Name: "foo",
+					Value: v1beta1.ArrayOrString{
+						StringVal: "bar",
+					},
+				}},
+				PipelineSpec: &v1beta1.PipelineSpec{
+					Tasks: []v1beta1.PipelineTask{{
+						TaskSpec: &v1beta1.EmbeddedTask{
+							TaskSpec: v1beta1.TaskSpec{},
+						},
+					}},
+				},
+			},
+			want: &v1beta1.PipelineRunSpec{
+				ServiceAccountName: config.DefaultServiceAccountValue,
+				Timeout:            &metav1.Duration{Duration: config.DefaultTimeoutMinutes * time.Minute},
+				Params: []v1beta1.Param{{
+					Name: "foo",
+					Value: v1beta1.ArrayOrString{
+						StringVal: "bar",
+					},
+				}},
+				PipelineSpec: &v1beta1.PipelineSpec{
+					Tasks: []v1beta1.PipelineTask{{
+						TaskSpec: &v1beta1.EmbeddedTask{
+							TaskSpec: v1beta1.TaskSpec{
+								Params: []v1beta1.ParamSpec{{
+									Name: "foo",
+									//Type: v1beta1.ParamTypeString,
+									Default: &v1beta1.ArrayOrString{
+										StringVal: "bar",
+									},
+								}},
+							},
+						},
+						Params: []v1beta1.Param{{
+							Name: "foo",
+							Value: v1beta1.ArrayOrString{
+								StringVal: "bar",
+							},
+						}},
+					}},
+					Params: []v1beta1.ParamSpec{{
+						Name: "foo",
+						//Type: v1beta1.ParamTypeString,
+						Default: &v1beta1.ArrayOrString{
+							StringVal: "bar",
+						},
+					}},
+				},
+			},
+		},
 	}
 	for _, tc := range cases {
 		t.Run(tc.desc, func(t *testing.T) {
+			fmt.Println(tc.desc)
 			ctx := context.Background()
 			tc.prs.SetDefaults(ctx)
 

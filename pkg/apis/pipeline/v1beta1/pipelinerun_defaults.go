@@ -52,6 +52,6 @@ func (prs *PipelineRunSpec) SetDefaults(ctx context.Context) {
 	}
 
 	if prs.PipelineSpec != nil {
-		prs.PipelineSpec.SetDefaults(ctx)
+		prs.PipelineSpec.SetDefaults(AddContextParams(ctx, prs.Params))
 	}
 }

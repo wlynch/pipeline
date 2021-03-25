@@ -29,7 +29,14 @@ func (p *Pipeline) SetDefaults(ctx context.Context) {
 }
 
 func (ps *PipelineSpec) SetDefaults(ctx context.Context) {
-	for _, pt := range ps.Tasks {
+	for i := range ps.Params {
+		ps.Params[i].SetDefaults(ctx)
+	}
+	ctx = AddContextParamSpec(ctx, ps.Params)
+	ps.Params = GetContextParamSpecs(ctx)
+	for i, pt := range ps.Tasks {
+		ctx := AddContextParams(ctx, pt.Params)
+		ps.Tasks[i].Params = GetContextParams(ctx)
 		if pt.TaskRef != nil {
 			if pt.TaskRef.Kind == "" {
 				pt.TaskRef.Kind = NamespacedTaskKind
@@ -39,9 +46,7 @@ func (ps *PipelineSpec) SetDefaults(ctx context.Context) {
 			pt.TaskSpec.SetDefaults(ctx)
 		}
 	}
-	for i := range ps.Params {
-		ps.Params[i].SetDefaults(ctx)
-	}
+
 	for _, ft := range ps.Finally {
 		if ft.TaskRef != nil {
 			if ft.TaskRef.Kind == "" {

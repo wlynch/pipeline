@@ -117,6 +117,62 @@ func TestTaskRunSpec_SetDefaults(t *testing.T) {
 			ServiceAccountName: config.DefaultServiceAccountValue,
 			Timeout:            &metav1.Duration{Duration: config.DefaultTimeoutMinutes * time.Minute},
 		},
+	}, {
+		desc: "implicit string param",
+		trs: &v1beta1.TaskRunSpec{
+			TaskSpec: &v1beta1.TaskSpec{},
+			Params: []v1beta1.Param{{
+				Name: "param-name",
+				Value: v1beta1.ArrayOrString{
+					StringVal: "a",
+				},
+			}},
+		},
+		want: &v1beta1.TaskRunSpec{
+			TaskSpec: &v1beta1.TaskSpec{
+				Params: []v1beta1.ParamSpec{{
+					Name: "param-name",
+					Type: v1beta1.ParamTypeString,
+				}},
+			},
+			Params: []v1beta1.Param{{
+				Name: "param-name",
+				Value: v1beta1.ArrayOrString{
+					StringVal: "a",
+				},
+			}},
+			ServiceAccountName: config.DefaultServiceAccountValue,
+			Timeout:            &metav1.Duration{Duration: config.DefaultTimeoutMinutes * time.Minute},
+		},
+	}, {
+		desc: "implicit array param",
+		trs: &v1beta1.TaskRunSpec{
+			TaskSpec: &v1beta1.TaskSpec{},
+			Params: []v1beta1.Param{{
+				Name: "param-name",
+				Value: v1beta1.ArrayOrString{
+					Type:     v1beta1.ParamTypeArray,
+					ArrayVal: []string{"a"},
+				},
+			}},
+		},
+		want: &v1beta1.TaskRunSpec{
+			TaskSpec: &v1beta1.TaskSpec{
+				Params: []v1beta1.ParamSpec{{
+					Name: "param-name",
+					Type: v1beta1.ParamTypeArray,
+				}},
+			},
+			Params: []v1beta1.Param{{
+				Name: "param-name",
+				Value: v1beta1.ArrayOrString{
+					Type:     v1beta1.ParamTypeArray,
+					ArrayVal: []string{"a"},
+				},
+			}},
+			ServiceAccountName: config.DefaultServiceAccountValue,
+			Timeout:            &metav1.Duration{Duration: config.DefaultTimeoutMinutes * time.Minute},
+		},
 	}}
 	for _, tc := range cases {
 		t.Run(tc.desc, func(t *testing.T) {
