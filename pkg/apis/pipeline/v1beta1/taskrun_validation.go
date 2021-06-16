@@ -26,12 +26,15 @@ import (
 	"github.com/tektoncd/pipeline/pkg/apis/validate"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"knative.dev/pkg/apis"
+	"sigs.k8s.io/yaml"
 )
 
 var _ apis.Validatable = (*TaskRun)(nil)
 
 // Validate taskrun
 func (tr *TaskRun) Validate(ctx context.Context) *apis.FieldError {
+	b, _ := yaml.Marshal(tr)
+	fmt.Println(string(b))
 	errs := validate.ObjectMetadata(tr.GetObjectMeta()).ViaField("metadata")
 	if apis.IsInDelete(ctx) {
 		return nil

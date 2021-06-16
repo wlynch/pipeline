@@ -88,10 +88,12 @@ func validateParams(paramSpecs []v1beta1.ParamSpec, params []v1beta1.Param) erro
 	if len(missingParamsNoDefaults) > 0 {
 		return fmt.Errorf("missing values for these params which have no default values: %s", missingParamsNoDefaults)
 	}
-	extraParams := list.DiffLeft(providedParams, neededParams)
-	if len(extraParams) != 0 {
-		return fmt.Errorf("didn't need these params but they were provided anyway: %s", extraParams)
-	}
+	/*
+		extraParams := list.DiffLeft(providedParams, neededParams)
+		if len(extraParams) != 0 {
+			return fmt.Errorf("didn't need these params but they were provided anyway: %s", extraParams)
+		}
+	*/
 
 	// Now that we have checked against missing/extra params, make sure each param's actual type matches
 	// the user-specified type.

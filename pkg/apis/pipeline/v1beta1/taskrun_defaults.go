@@ -18,10 +18,8 @@ package v1beta1
 
 import (
 	"context"
-	"fmt"
 	"time"
 
-	"github.com/ghodss/yaml"
 	"github.com/tektoncd/pipeline/pkg/apis/config"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"knative.dev/pkg/apis"
@@ -68,10 +66,6 @@ func (trs *TaskRunSpec) SetDefaults(ctx context.Context) {
 
 	// If this taskrun has an embedded task, apply the usual task defaults
 	if trs.TaskSpec != nil {
-		trs.TaskSpec.Params = inheritParams(trs.Params, trs.TaskSpec.Params)
-		trs.TaskSpec.SetDefaults(ctx)
+		trs.TaskSpec.SetDefaults(AddContextParams(ctx, trs.Params))
 	}
-
-	b, _ := yaml.Marshal(trs)
-	fmt.Println(string(b))
 }

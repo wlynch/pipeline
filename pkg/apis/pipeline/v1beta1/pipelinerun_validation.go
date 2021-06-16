@@ -26,6 +26,7 @@ import (
 	"github.com/tektoncd/pipeline/pkg/apis/validate"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"knative.dev/pkg/apis"
+	"sigs.k8s.io/yaml"
 )
 
 var _ apis.Validatable = (*PipelineRun)(nil)
@@ -47,6 +48,8 @@ func (pr *PipelineRun) Validate(ctx context.Context) *apis.FieldError {
 
 // Validate pipelinerun spec
 func (ps *PipelineRunSpec) Validate(ctx context.Context) (errs *apis.FieldError) {
+	b, _ := yaml.Marshal(ps)
+	fmt.Println(string(b))
 	cfg := config.FromContextOrDefaults(ctx)
 	// can't have both pipelineRef and pipelineSpec at the same time
 	if (ps.PipelineRef != nil && ps.PipelineRef.Name != "") && ps.PipelineSpec != nil {

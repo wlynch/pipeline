@@ -42,6 +42,7 @@ require (
 	k8s.io/kube-openapi v0.0.0-20210113233702-8566a335510f
 	k8s.io/utils v0.0.0-20210111153108-fddb29f9d009
 	knative.dev/pkg v0.0.0-20210331065221-952fdd90dbb0
+	sigs.k8s.io/yaml v1.2.0
 )
 
 // Knative deps (release-0.20)
